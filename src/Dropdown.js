@@ -43,6 +43,7 @@ class Dropdown extends React.Component {
         if (onChange){
             onChange(item)
         }
+        this.setState({isOpen: false});
     }
 
     render() {
@@ -50,11 +51,11 @@ class Dropdown extends React.Component {
         return (
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
-                    <span className="text">{selected.text || ''}</span>
+                    <span className="text">{selected.text || 'Select filter options'}</span>
                     {isOpen? (<ChevronUp/>):(<ChevronDown/>)}
                 </div>
                 <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
-                    {this.state.data.map(item => (
+                    {[{text:'', value:''}].concat(this.state.data).map(item => (
                         <li key={item.text} onClick={this.select.bind(this, item)} value={item.value}>{item.text}</li>
                     ))}
                 </ul>
