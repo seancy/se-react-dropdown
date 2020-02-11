@@ -3,14 +3,37 @@
   position: relative;
   display: inline-block;
 
+  %scrollbar {
+    /* width */
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+
   .select {
-    width: 200px;
     height: 35px;
-    //background-color: red;
     border: 1px solid #ccc;
     cursor: pointer;
     color: grey;
     position: relative;
+    padding-right: 23px;
+    box-sizing: border-box;
 
     .text {
       line-height: 35px;
@@ -18,6 +41,7 @@
       padding-left: 10px;
       display: inline-block;
       width: 100%;
+      box-sizing: border-box;
     }
 
     svg {
@@ -31,17 +55,19 @@
   }
 
   .panel {
+    @extend %scrollbar;
+
     position: absolute;
     box-sizing: border-box;
-    width: 100%;
+    min-width: 100%;
     background-color: white;
     border: 1px solid #ccc;
     list-style: none;
     padding: 0;
     margin: 0;
     text-align: left;
-
-    //display: none;
+    overflow-y: auto;
+    max-height: 200px;
 
     &.hide {
       display: none;
@@ -53,10 +79,15 @@
       line-height: 25px;
       text-align: left;
       padding-left: 10px;
+      padding-right: 10px;
       color: grey;
 
-      &:hover{
+      &:hover {
         background-color: #f7f7f7;
+      }
+
+      &.active{
+        background-color: #ccc;
       }
     }
 
