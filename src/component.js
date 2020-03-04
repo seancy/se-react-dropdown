@@ -26,10 +26,14 @@ class Component extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.data.every(e => this.state.data.includes(e))) {
+        const {data}=nextProps
+        if (data.length <= 0 || !data.every(e => this.state.data.includes(e))) {
             setTimeout(()=>{
-                this.setState((s)=>{
-                    return {data: this.props.data}
+                this.setState(()=>{
+                    return {
+                        data,
+                        selected: data.find(p => p.value == nextProps.value) || (data.length>0?data[0]:{text:'',value:''})
+                    }
                 })
             },50)
         }
@@ -81,13 +85,13 @@ class Component extends React.Component {
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
                     <span className="text">{selected.text || selected.value || this.props.placeHolderStr}</span>
-                    {isOpen ? (<ChevronUp className="icon-up"/>) : (<ChevronDown className="icon-down"/>)}
+                    {isOpen ? (<ChevronUp/>) : (<ChevronDown/>)}
                 </div>
                 <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
                     {data.map(item => (
                         <li key={item.text || item.value} onClick={this.select.bind(this, item)}
                             className={(item.value == selected.value?'active':'')}
-                            value={item.value}>{item.text || item.value}</li>
+                            >{item.text || item.value}</li>
                     ))}
                 </ul>
             </div>

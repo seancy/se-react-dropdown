@@ -5,4 +5,4 @@ npm run transpile
 npm publish --access public
 
 cd ../sec-react-label-value
-npm install --save sec-react-dropdown
+npm install --save se-react-dropdown

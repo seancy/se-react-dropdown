@@ -56,8 +56,15 @@ class App extends React.Component {
             comments: response.comments
           });
         });*/
-      }
+    }
 
+    loadData(){
+        this.setState({data:arr})
+    }
+
+    loadData0(){
+        this.setState({data:[]})
+    }
 
     increase(){
         this.setState(s=>{
@@ -84,6 +91,8 @@ class App extends React.Component {
                 />
                 <button onClick={this.increase.bind(this)}>increase{this.state.num}</button>
                 <button onClick={this.changePages.bind(this)}>change pages</button>
+                <button onClick={this.loadData.bind(this)}>load data</button>
+                <button onClick={this.loadData0.bind(this)}>load data 0</button>
             </div>
         );
     }
