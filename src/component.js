@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from 'prop-types'
 
 import "./component.scss"
 import ChevronDown from './chevron-down-solid.svg'
@@ -9,45 +10,20 @@ class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const {data, value} = props
-        let item = data.find(p => p.value == value) || this.props.data[0]
         this.state = {
-            data: props.data,
             isOpen: false,
-            selected: item || {}
+            selectedValue:props.value
         };
         this.myRef = React.createRef();
-
-        if (item){
-            this.fireOnChange()
-        }
 
         document.addEventListener("click", this.hidePanel.bind(this), true);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {data}=nextProps
-        if (data.length <= 0 || !data.every(e => this.state.data.includes(e))) {
-            setTimeout(()=>{
-                this.setState(()=>{
-                    return {
-                        data,
-                        selected: data.find(p => p.value == nextProps.value) || (data.length>0?data[0]:{text:'',value:''})
-                    }
-                })
-            },50)
+    /*componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.state.selectedValue) {
+            this.setState({selectedValue: nextProps.value}, this.fireOnChange.bind(this))
         }
-
-        setTimeout(()=>{
-            if (nextProps.value !== this.state.selected.value) {
-                const item = this.state.data.find(p => p.value == nextProps.value)
-                item && this.setState({
-                    selected: item
-                })
-            }
-        }, 100)
-
-    }
+    }*/
 
 
     hidePanel = e => {
@@ -67,7 +43,7 @@ class Component extends React.Component {
 
     select(item) {
         this.setState({
-            selected: item,
+            selectedValue:item.value,
             isOpen: false
         }, this.fireOnChange)
     }
@@ -75,22 +51,35 @@ class Component extends React.Component {
     fireOnChange(){
         const {onChange} = this.props
         if (onChange) {
-            onChange(this.state.selected)
+            onChange(this.getSelected())
         }
     }
 
+    getSelected(){
+        const {data}=this.props
+        let selected = data.find(p=>p.value==this.state.selectedValue)
+        if (!selected && data.length){
+            selected = data[0]
+        }
+        return selected || {}
+    }
+
     render() {
-        const {data, selected, isOpen} = this.state;
+        const {data}=this.props
+        let {isOpen} = this.state;
+        let selected = this.getSelected()
+        const defaultVal = selected.text || selected.value
+            || this.props.placeHolderStr
         return (
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
-                    <span className="text">{selected.text || selected.value || this.props.placeHolderStr}</span>
+                    <span className="text">{defaultVal}</span>
                     {isOpen ? (<ChevronUp/>) : (<ChevronDown/>)}
                 </div>
                 <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
                     {data.map(item => (
                         <li key={item.text || item.value} onClick={this.select.bind(this, item)}
-                            className={(item.value == selected.value?'active':'')}
+                            className={(item.value == selected.value ?'active':'')}
                             >{item.text || item.value}</li>
                     ))}
                 </ul>
@@ -101,3 +90,12 @@ class Component extends React.Component {
 
 export default Component;
 
+Component.propTypes = {
+    data:PropTypes.arrayOf(PropTypes.exact({
+        value:PropTypes.string,
+        text:PropTypes.string
+    })),
+    value:PropTypes.string,
+    placeHolderStr:PropTypes.string,
+    onChange:PropTypes.func,
+}

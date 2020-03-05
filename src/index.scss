@@ -3,6 +3,27 @@
 
 }
 
+.button-wrapper {
+  margin-top: 20px;
+}
+
+.value-switcher {
+  margin-top: 20px;
+
+  ul {
+    list-style: none;
+    margin-top: 10px;
+
+    li {
+      display: inline-block;
+
+      &:not(:first-child){
+        margin-left: 15px
+      }
+    }
+  }
+}
+
 button {
   margin-left: 20px;
   padding: 5px 10px;

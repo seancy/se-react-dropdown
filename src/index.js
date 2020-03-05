@@ -8,13 +8,18 @@ const styles = {
     textAlign: "center"
 };
 
-const arr = [
+
+const shortArr = [
     {value: 'a0', text: 'name'},
     {value: 'a1', text: 'address'},
-    {value: 'a2', text: 'city'},
+    {value: 'city', text: 'City'},
+
+]
+
+const arr = [
     {value: 'a3', text: 'gender'},
     {value: 'a4', text: 'country'},
-    {value: 'a5', text: 'direction'},
+    {value: 'direction', text: 'Direction'},
     {value: 'a6', text: 'time'},
     {value: 'a7', text: 'confirm'},
     {value: 'a8', text: 'unconfirm'},
@@ -26,10 +31,13 @@ const arr = [
 ]
 
 const numArr = [
-    {value: ''},
+    //{value: ''},
     {value: '1'},
     {value: '2'},
     {value: '3'},
+    {value: '4'},
+    {value: '5'},
+    {value: '6'},
 ]
 
 const numArr2 = [...Array(31).keys()].splice(1).map(item=>({value:item}))
@@ -40,22 +48,23 @@ class App extends React.Component {
         super(props, context);
         this.state = {
             data:numArr,
-            num:2
+            value:2,
+            selectedItem:null
         }
     }
 
     componentDidMount() {
-        /*fetchPosts().then(response => {
-          this.setState({
-            posts: response.posts
-          });
-        });
+        setTimeout(()=>{
+            //this.setState({data:shortArr})
+        },1000)
+    }
 
-        fetchComments().then(response => {
-          this.setState({
-            comments: response.comments
-          });
-        });*/
+    loadNumberData(){
+        this.setState({data:numArr})
+    }
+
+    loadShortData(){
+        this.setState({data:shortArr})
     }
 
     loadData(){
@@ -68,14 +77,20 @@ class App extends React.Component {
 
     increase(){
         this.setState(s=>{
-            let num = s.num;
-            num++
-            return {num}
+            let value = s.value;
+            value++
+            return {value}
         })
     }
 
-    changePages(){
-        this.setState({data:arr, num:'a2'})
+    setValue(value){
+        this.setState({value})
+    }
+
+    updateSelectedItem(selectedItem){
+        this.setState({selectedItem}, ()=>{
+            console.log(this.state.selectedItem)
+        })
     }
 
     render() {
@@ -86,13 +101,31 @@ class App extends React.Component {
                 <Component
                     //enableEmptyOption={true}
                     data={this.state.data} placeHolderStr={placeHolderStr}
-                    value={this.state.num}
-                    onChange={e => console.log(e)}
+                    value={this.state.value}
+                    onChange={this.updateSelectedItem.bind(this)}
                 />
-                <button onClick={this.increase.bind(this)}>increase{this.state.num}</button>
-                <button onClick={this.changePages.bind(this)}>change pages</button>
-                <button onClick={this.loadData.bind(this)}>load data</button>
-                <button onClick={this.loadData0.bind(this)}>load data 0</button>
+                <div className="button-wrapper">
+                    <button onClick={this.increase.bind(this)}>increase{this.state.num}</button>
+                    <button onClick={this.loadNumberData.bind(this)}>load number data</button>
+                    <button onClick={this.loadShortData.bind(this)}>load short data</button>
+                    <button onClick={this.loadData.bind(this)}>load data</button>
+                    <button onClick={this.loadData0.bind(this)}>load data 0</button>
+                </div>
+                <div className="value-switcher">
+                    <span>change dropdown value to:</span>
+                    <ul>
+                        {['2','city','direction'].map(p=>{
+                            return (
+                                <li>
+                                    <input onClick={this.setValue.bind(this, p)} name="value-switcher" type="radio" id={'radio-'+p}/>
+                                    <label htmlFor={'radio-'+p}>{p}</label>
+                                </li>
+                            )
+                        })}
+
+                    </ul>
+                </div>
+
             </div>
         );
     }
