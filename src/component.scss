@@ -46,10 +46,13 @@
 
     svg {
       position: absolute;
-      width: 16px;
       right: 8px;
       top: calc(50% - 6px);
       width: 10px;
+
+      &.fa-caret-up, &.fa-caret-down {
+        top: calc(50% - 8px);
+      }
     }
 
   }

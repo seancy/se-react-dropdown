@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 import "./component.scss"
 import ChevronDown from './chevron-down-solid.svg'
 import ChevronUp from './chevron-up-solid.svg'
+import CaretUp from './caret-up-solid.svg'
+import CaretDown from './caret-down-solid.svg'
+
 
 class Component extends React.Component {
     constructor(props, context) {
@@ -18,13 +21,6 @@ class Component extends React.Component {
 
         document.addEventListener("click", this.hidePanel.bind(this), true);
     }
-
-    /*componentWillReceiveProps(nextProps) {
-        if (nextProps.value !== this.state.selectedValue) {
-            this.setState({selectedValue: nextProps.value}, this.fireOnChange.bind(this))
-        }
-    }*/
-
 
     hidePanel = e => {
         if (!this.myRef.current) {
@@ -64,6 +60,14 @@ class Component extends React.Component {
         return selected || {}
     }
 
+    getUpOrDownIcon(isOpen){
+        if (isOpen){
+            return this.props.sign == 'caret'? <CaretUp/>:<ChevronUp/>
+        }else{
+            return this.props.sign == 'caret'? <CaretDown/>:<ChevronDown/>
+        }
+    }
+
     render() {
         const {data}=this.props
         let {isOpen} = this.state;
@@ -74,7 +78,7 @@ class Component extends React.Component {
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
                     <span className="text">{defaultVal}</span>
-                    {isOpen ? (<ChevronUp/>) : (<ChevronDown/>)}
+                    {this.getUpOrDownIcon(isOpen)}
                 </div>
                 <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
                     {data.map(item => (

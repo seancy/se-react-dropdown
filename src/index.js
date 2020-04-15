@@ -100,6 +100,7 @@ class App extends React.Component {
             <div style={styles}>
                 <Component
                     //enableEmptyOption={true}
+                    sign='caret'
                     data={this.state.data} placeHolderStr={placeHolderStr}
                     value={this.state.value}
                     onChange={this.updateSelectedItem.bind(this)}
