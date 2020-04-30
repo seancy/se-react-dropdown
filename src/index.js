@@ -47,8 +47,14 @@ class App extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            data:numArr,
-            value:2,
+            //data:numArr,
+            data:arr,
+
+            //value:2,
+            //value:'2,3,4',
+            //value:'direction',
+            value:'direction,a6',
+            enableMultiple:true,
             selectedItem:null
         }
     }
@@ -93,14 +99,25 @@ class App extends React.Component {
         })
     }
 
+    changeMultipleStatus(e){
+        const enableMultiple =e.currentTarget.checked
+        this.setState({enableMultiple})
+    }
+
     render() {
         const placeHolderStr = ""
         //const placeHolderStr = "Select filter options"
+        const {enableMultiple}=this.state
+        const render=(text,item)=>{
+            return `${text} - ${item.value}`
+        }
         return (
             <div style={styles}>
                 <Component
                     //enableEmptyOption={true}
                     sign='caret'
+                    multiple={enableMultiple}
+                    optionRender={render}
                     data={this.state.data} placeHolderStr={placeHolderStr}
                     value={this.state.value}
                     onChange={this.updateSelectedItem.bind(this)}
@@ -123,6 +140,10 @@ class App extends React.Component {
                                 </li>
                             )
                         })}
+                        <li>
+                            <input type="checkbox" checked={enableMultiple} onChange={this.changeMultipleStatus.bind(this)} id='enable-multiple'/>
+                            <label htmlFor="enable-multiple">enable multiple</label>
+                        </li>
 
                     </ul>
                 </div>

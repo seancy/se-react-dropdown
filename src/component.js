@@ -15,6 +15,8 @@ class Component extends React.Component {
 
         this.state = {
             isOpen: false,
+            filterValue:'',
+            selectedValues:props.value?props.value.toString().split(','):[],
             selectedValue:props.value
         };
         this.myRef = React.createRef();
@@ -38,9 +40,29 @@ class Component extends React.Component {
     };
 
     select(item) {
+        const {multiple}=this.props
+        if (multiple){
+            return false;
+        }
         this.setState({
             selectedValue:item.value,
             isOpen: false
+        }, this.fireOnChange)
+    }
+
+    selectMultiple(e, item){
+        const target = e.currentTarget, checked = target.checked
+        this.setState((prev)=>{
+            let {selectedValues} = prev
+            if (checked){
+                selectedValues.push(item.value)
+            }else{
+                selectedValues = selectedValues.filter(val=>val != item.value)
+            }
+            return {
+                selectedValues
+                //isOpen: false
+            }
         }, this.fireOnChange)
     }
 
@@ -52,12 +74,24 @@ class Component extends React.Component {
     }
 
     getSelected(){
-        const {data}=this.props
-        let selected = data.find(p=>p.value==this.state.selectedValue)
-        if (!selected && data.length){
-            selected = data[0]
+        const {data,multiple}=this.props
+        const {selectedValue, selectedValues}=this.state
+        let selectedItems = [],selectedItem = null
+        if (multiple){
+            selectedItems = data.filter(p=>{
+                return selectedValues.includes(p.value)
+            })
+            return selectedItems
+        }else{
+            selectedItem = data.find(p=>{
+                return p.value==selectedValue
+            })
+            if (!selectedItem && data.length){
+                selectedItem = data[0] || {}
+            }
+            return selectedItem
         }
-        return selected || {}
+        //return selected.length <= 1 ? (selected[0] || {}) : selected
     }
 
     getUpOrDownIcon(isOpen){
@@ -69,23 +103,50 @@ class Component extends React.Component {
     }
 
     render() {
-        const {data}=this.props
-        let {isOpen} = this.state;
+        const {data,multiple,optionRender}=this.props
+        let {isOpen,filterValue, selectedValues} = this.state;
         let selected = this.getSelected()
-        const defaultVal = selected.text || selected.value
-            || this.props.placeHolderStr
+        const getDefaultVal = (item)=>{
+            if (multiple){
+                return selected.map(p=>(<span>{getItemText(p)}</span>))
+            }else{
+                return getItemText(item)
+                    || this.props.placeHolderStr
+            }
+        }
+        const getItemText=(item)=>{
+            return optionRender ? optionRender(item.text, item) : (item.text || item.value)
+        }
+        const getIfChecked=item=>{
+            if (multiple){
+                return selected.find(p=>p.value==item.value)
+            }else{
+                return selected.value == item.value
+            }
+
+        }
+        const list = filterValue != '' ? data.filter(({text,value})=>((text || value).includes(filterValue) || selectedValues.includes(value))) :data
         return (
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
-                    <span className="text">{defaultVal}</span>
+                    {!multiple && <span className="text">{getDefaultVal(selected)}</span>}
+                    {multiple && <input type="text" onChange={e=>this.setState({filterValue:e.currentTarget.value})}/>}
                     {this.getUpOrDownIcon(isOpen)}
                 </div>
                 <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
-                    {data.map(item => (
-                        <li key={item.text || item.value} onClick={this.select.bind(this, item)}
-                            className={(item.value == selected.value ?'active':'')}
-                            >{item.text || item.value}</li>
-                    ))}
+                    {list.map((item,i) => {
+                        const boxID = `box-${i}`
+                        return (
+                            <li key={item.text || item.value} onClick={this.select.bind(this, item)}
+                                className={(item.value == selected.value ?'active':'')}
+                                >
+                                {multiple && <input type="checkbox" id={boxID} checked={getIfChecked(item)}
+                                                    onChange={(e)=>{this.selectMultiple(e, item)}}/>}
+                                {multiple && <label htmlFor={boxID}>{getItemText(item)}</label>}
+                                {!multiple && getItemText(item)}
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
         );
@@ -99,7 +160,9 @@ Component.propTypes = {
         value:PropTypes.string,
         text:PropTypes.string
     })),
+    multiple:PropTypes.bool,
+    optionRender:PropTypes.func,
     value:PropTypes.string,
     placeHolderStr:PropTypes.string,
-    onChange:PropTypes.func,
+    onChange:PropTypes.func
 }
