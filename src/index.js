@@ -54,7 +54,8 @@ class App extends React.Component {
             //value:'2,3,4',
             //value:'direction',
             value:'direction,a6',
-            enableMultiple:true,
+            enableMultiple:false,
+            searchable:true,
             selectedItem:null
         }
     }
@@ -107,7 +108,7 @@ class App extends React.Component {
     render() {
         const placeHolderStr = ""
         //const placeHolderStr = "Select filter options"
-        const {enableMultiple}=this.state
+        const {enableMultiple,searchable}=this.state
         const render=(text,item)=>{
             return `${text} - ${item.value}`
         }
@@ -116,7 +117,7 @@ class App extends React.Component {
                 <Component
                     //enableEmptyOption={true}
                     sign='caret'
-                    multiple={enableMultiple}
+                    multiple={enableMultiple} searchable={searchable}
                     optionRender={render}
                     data={this.state.data} placeHolderStr={placeHolderStr}
                     value={this.state.value}
@@ -143,6 +144,10 @@ class App extends React.Component {
                         <li>
                             <input type="checkbox" checked={enableMultiple} onChange={this.changeMultipleStatus.bind(this)} id='enable-multiple'/>
                             <label htmlFor="enable-multiple">enable multiple</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" checked={searchable} onChange={e=>this.setState({searchable:e.currentTarget.checked})} id='enable-searchable'/>
+                            <label htmlFor="enable-searchable">searchable</label>
                         </li>
 
                     </ul>

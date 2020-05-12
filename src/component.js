@@ -103,7 +103,7 @@ class Component extends React.Component {
     }
 
     render() {
-        const {data,multiple,optionRender}=this.props
+        const {data,multiple,optionRender,searchable}=this.props
         let {isOpen,filterValue, selectedValues} = this.state;
         let selected = this.getSelected()
         const getDefaultVal = (item)=>{
@@ -125,15 +125,17 @@ class Component extends React.Component {
             }
 
         }
-        const list = filterValue != '' ? data.filter(({text,value})=>((text || value).includes(filterValue) || selectedValues.includes(value))) :data
+        const list = filterValue != '' ? data.filter(({text,value})=>((text || value).toLowerCase().includes(filterValue.toLowerCase()) || selectedValues.includes(value))) :data
         return (
             <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
-                    {!multiple && <span className="text">{getDefaultVal(selected)}</span>}
-                    {multiple && <input type="text" onChange={e=>this.setState({filterValue:e.currentTarget.value})}/>}
+                    {<span className="text">{getDefaultVal(selected)}</span>}
+                    {/*{multiple && <input type="text" onChange={e=>this.setState({filterValue:e.currentTarget.value})}/>}*/}
                     {this.getUpOrDownIcon(isOpen)}
                 </div>
-                <ul className={'panel' + (!this.state.isOpen && ' hide' || '')}>
+                <div className={'panel' + (!this.state.isOpen && ' hide' || '')}>
+                    {searchable && <input type="text" ref={input => input && input.focus()} onChange={e=>this.setState({filterValue:e.currentTarget.value})}/>}
+                    <ul>
                     {list.map((item,i) => {
                         const boxID = `box-${i}`
                         return (
@@ -147,7 +149,8 @@ class Component extends React.Component {
                             </li>
                         )
                     })}
-                </ul>
+                    </ul>
+                </div>
             </div>
         );
     }
@@ -161,6 +164,7 @@ Component.propTypes = {
         text:PropTypes.string
     })),
     multiple:PropTypes.bool,
+    searchable:PropTypes.bool,
     optionRender:PropTypes.func,
     value:PropTypes.string,
     placeHolderStr:PropTypes.string,
