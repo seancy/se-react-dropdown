@@ -40,7 +40,7 @@ const numArr = [
     {value: '6'},
 ]
 
-const numArr2 = [...Array(31).keys()].splice(1).map(item=>({value:item}))
+//const numArr2 = [...Array(31).keys()].splice(1).map(item=>({value:item}))
 
 
 class App extends React.Component {
@@ -135,7 +135,7 @@ class App extends React.Component {
                     <ul>
                         {['2','city','direction'].map(p=>{
                             return (
-                                <li>
+                                <li key={p}>
                                     <input onClick={this.setValue.bind(this, p)} name="value-switcher" type="radio" id={'radio-'+p}/>
                                     <label htmlFor={'radio-'+p}>{p}</label>
                                 </li>
