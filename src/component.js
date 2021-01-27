@@ -9,7 +9,7 @@ import CaretUp from './caret-up-solid.svg'
 import CaretDown from './caret-down-solid.svg'
 
 
-class Component extends React.Component {
+class Dropdown extends React.Component {
     constructor(props, context) {
         super(props, context);
 
@@ -22,6 +22,13 @@ class Component extends React.Component {
         this.myRef = React.createRef();
 
         document.addEventListener("click", this.hidePanel.bind(this), true);
+    }
+
+    clean(){
+        this.setState({
+            selectedValues:[],
+            selectedValue:''
+        }, this.fireOnChange)
     }
 
     hidePanel = e => {
@@ -84,10 +91,13 @@ class Component extends React.Component {
             return selectedItems
         }else{
             selectedItem = data.find(p=>{
-                return p.value==selectedValue
+                return p.value===selectedValue
             })
-            if (!selectedItem && data.length){
+            /*if (!selectedItem && data.length){
                 selectedItem = data[0] || {}
+            }*/
+            if (!selectedItem){
+                selectedItem = {text:'',value:''}
             }
             return selectedItem
         }
@@ -139,7 +149,8 @@ class Component extends React.Component {
                     {list.map((item,i) => {
                         const boxID = `box-${i}`
                         return (
-                            <li key={item.text || item.value} onClick={this.select.bind(this, item)}
+
+                            <li key={`index-${i}`} onClick={this.select.bind(this, item)}
                                 className={(item.value == selected.value ?'active':'')}
                                 >
                                 {multiple && <input type="checkbox" id={boxID} checked={getIfChecked(item)}
@@ -156,11 +167,14 @@ class Component extends React.Component {
     }
 }
 
-export default Component;
+export default Dropdown;
 
-Component.propTypes = {
-    data:PropTypes.arrayOf(PropTypes.exact({
-        value:PropTypes.string,
+Dropdown.propTypes = {
+    data:PropTypes.arrayOf(PropTypes.shape({
+        value:PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]),
         text:PropTypes.string
     })),
     multiple:PropTypes.bool,

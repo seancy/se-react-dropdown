@@ -17,8 +17,8 @@ const shortArr = [
 ]
 
 const arr = [
-    {value: 'a3', text: 'gender'},
-    {value: 'a4', text: 'country'},
+    {value: 0, text: 'gender'},
+    {value: 1, text: 'country'},
     {value: 'direction', text: 'Direction'},
     {value: 'a6', text: 'time'},
     {value: 'a7', text: 'confirm'},
@@ -58,6 +58,7 @@ class App extends React.Component {
             searchable:true,
             selectedItem:null
         }
+        this.myRef = React.createRef()
     }
 
     componentDidMount() {
@@ -105,22 +106,29 @@ class App extends React.Component {
         this.setState({enableMultiple})
     }
 
+    clean(){
+        this.myRef.current.clean()
+        //console.log(this.myRef.current.getSelected());
+    }
+
     render() {
         const placeHolderStr = ""
         //const placeHolderStr = "Select filter options"
         const {enableMultiple,searchable}=this.state
         const render=(text,item)=>{
-            return `${text} - ${item.value}`
+            return `${text} - ${item?item.value:''}`
         }
         return (
             <div style={styles}>
-                <Component
+                <Component ref={this.myRef}
                     //enableEmptyOption={true}
                     sign='caret'
-                    multiple={enableMultiple} searchable={searchable}
-                    optionRender={render}
-                    data={this.state.data} placeHolderStr={placeHolderStr}
-                    value={this.state.value}
+                    //multiple={enableMultiple}
+                   searchable={searchable}
+                    //optionRender={render}
+                    data={this.state.data}
+                     //placeHolderStr={placeHolderStr}
+                    //value={this.state.value}
                     onChange={this.updateSelectedItem.bind(this)}
                 />
                 <div className="button-wrapper">
@@ -129,6 +137,7 @@ class App extends React.Component {
                     <button onClick={this.loadShortData.bind(this)}>load short data</button>
                     <button onClick={this.loadData.bind(this)}>load data</button>
                     <button onClick={this.loadData0.bind(this)}>load data 0</button>
+                    <button onClick={this.clean.bind(this)}>clean</button>
                 </div>
                 <div className="value-switcher">
                     <span>change dropdown value to:</span>
