@@ -112,8 +112,8 @@ class App extends React.Component {
     }
 
     render() {
-        const placeHolderStr = ""
-        //const placeHolderStr = "Select filter options"
+        //const placeHolderStr = ""
+        const placeHolderStr = "Select filter options"
         const {enableMultiple,searchable}=this.state
         const render=(text,item)=>{
             return `${text} - ${item?item.value:''}`
@@ -127,7 +127,7 @@ class App extends React.Component {
                    searchable={searchable}
                     //optionRender={render}
                     data={this.state.data}
-                     //placeHolderStr={placeHolderStr}
+                     placeHolderStr={placeHolderStr}
                     //value={this.state.value}
                     onChange={this.updateSelectedItem.bind(this)}
                 />
