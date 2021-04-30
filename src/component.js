@@ -137,7 +137,7 @@ class Dropdown extends React.Component {
         }
         const list = filterValue != '' ? data.filter(({text,value})=>((text || value).toLowerCase().includes(filterValue.toLowerCase()) || selectedValues.includes(value))) :data
         return (
-            <div ref={this.myRef} className={'se-react-dropdown ' + (this.props.className || '')}>
+            <div ref={this.myRef} className={'lt-react-dropdown ' + (this.props.className || '')}>
                 <div className="select" onClick={this.toggle.bind(this)}>
                     {<span className="text">{getDefaultVal(selected)}</span>}
                     {/*{multiple && <input type="text" onChange={e=>this.setState({filterValue:e.currentTarget.value})}/>}*/}
