@@ -4,7 +4,7 @@ node ./r.js
 npm run transpile
 npm publish --access public
 
-cd ../sec-react-label-value
+cd ../lt-react-label-value
 npm install --save lt-react-dropdown
 
 cd ../hawthorn/platform
