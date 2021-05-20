@@ -123,12 +123,12 @@ class App extends React.Component {
                 <Component ref={this.myRef}
                     //enableEmptyOption={true}
                     sign='caret'
-                    //multiple={enableMultiple}
+                    multiple={enableMultiple}
                    searchable={searchable}
                     //optionRender={render}
                     data={this.state.data}
                      placeHolderStr={placeHolderStr}
-                    //value={this.state.value}
+                    value={this.state.value}
                     onChange={this.updateSelectedItem.bind(this)}
                 />
                 <div className="button-wrapper">
