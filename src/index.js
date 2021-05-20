@@ -53,7 +53,7 @@ class App extends React.Component {
             //value:2,
             //value:'2,3,4',
             //value:'direction',
-            value:'direction,a6',
+            value:'a6',
             enableMultiple:false,
             searchable:true,
             selectedItem:null
@@ -106,9 +106,11 @@ class App extends React.Component {
         this.setState({enableMultiple})
     }
 
+    reset(){
+        this.setState({value:'a7'})
+    }
     clean(){
         this.myRef.current.clean()
-        //console.log(this.myRef.current.getSelected());
     }
 
     render() {
@@ -138,6 +140,7 @@ class App extends React.Component {
                     <button onClick={this.loadData.bind(this)}>load data</button>
                     <button onClick={this.loadData0.bind(this)}>load data 0</button>
                     <button onClick={this.clean.bind(this)}>clean</button>
+                    <button onClick={this.reset.bind(this)}>reset</button>
                 </div>
                 <div className="value-switcher">
                     <span>change dropdown value to:</span>

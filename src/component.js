@@ -7,7 +7,7 @@ import ChevronDown from './chevron-down-solid.svg'
 import ChevronUp from './chevron-up-solid.svg'
 import CaretUp from './caret-up-solid.svg'
 import CaretDown from './caret-down-solid.svg'
-
+import equal from 'fast-deep-equal'
 
 class Dropdown extends React.Component {
     constructor(props, context) {
@@ -22,6 +22,18 @@ class Dropdown extends React.Component {
         this.myRef = React.createRef();
 
         document.addEventListener("click", this.hidePanel.bind(this), true);
+    }
+
+    componentDidUpdate(prevProps) {
+        const {value,multiple}=this.props
+        if(!equal(value, prevProps.value))
+        {
+            if (multiple) {
+                this.setState({selectedValues:value.toString().split(',')})
+            }else {
+                this.setState({selectedValue:value})
+            }
+        }
     }
 
     clean() {
