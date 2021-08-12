@@ -1,5 +1,5 @@
 {
-  "name": "lt-react-dropdown",
+  "name": "se-react-dropdown",
   "version": "2.0.4",
   "main": "dist/component.js",
   "scripts": {
@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Learningtribes/lt-react-dropdown.git"
+    "url": "git+https://github.com/seancy/se-react-dropdown.git"
   },
   "keywords": [
     "react",
@@ -53,8 +53,8 @@
     "range"
   ],
   "bugs": {
-    "url": "https://github.com/Learningtribes/lt-react-dropdown/issues"
+    "url": "https://github.com/seancy/se-react-dropdown/issues"
   },
-  "homepage": "https://github.com/Learningtribes/lt-react-dropdown#readme",
+  "homepage": "https://github.com/seancy/se-react-dropdown#readme",
   "description": "scope element Dropdown"
 }
