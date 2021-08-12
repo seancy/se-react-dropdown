@@ -133,7 +133,7 @@ class Dropdown extends React.Component {
                 return selected.map((p, i) => (<span key={`span-${i}`}>{getItemText(p)}</span>))
             } else {
                 return getItemText(item)
-                    || this.props.placeHolderStr
+                    || pr.placeHolderStr
             }
         }
         const getItemText = (item) => {
