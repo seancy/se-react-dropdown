@@ -125,7 +125,7 @@ class Dropdown extends React.Component {
     }
 
     render() {
-        const {data, multiple, optionRender, searchable} = this.props
+        const {data, multiple, optionRender, searchable} = this.props, pr=this.props
         let {isOpen, filterValue, selectedValues} = this.state;
         let selected = this.getSelected()
         const getDefaultVal = (item) => {
