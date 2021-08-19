@@ -19,7 +19,8 @@ const shortArr = [
 const arr = [
     {value: 0, text: 'gender'},
     {value: 1, text: 'country'},
-    {value: 'direction', text: 'Direction'},
+    {value: 'direction', text: 'Nouvel arrivant chez Garantie Privée : Accueil des nouveaux membres de l’équipe commerciale\n' +
+            '\n'},
     {value: 'a6', text: 'time'},
     {value: 'a7', text: 'confirm'},
     {value: 'a8', text: 'unconfirm'},
