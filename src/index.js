@@ -55,7 +55,7 @@ class App extends React.Component {
             //value:'2,3,4',
             //value:'direction',
             value:'a6',
-            enableMultiple:false,
+            enableMultiple:true,
             searchable:true,
             selectedItem:null
         }

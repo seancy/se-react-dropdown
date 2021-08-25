@@ -130,7 +130,8 @@ class Dropdown extends React.Component {
         let selected = this.getSelected()
         const getDefaultVal = (item) => {
             if (multiple) {
-                return selected.map((p, i) => (<span key={`span-${i}`}>{getItemText(p)}</span>))
+                const snips = selected.map((p, i) => (<span key={`span-${i}`}>{getItemText(p)}</span>))
+                return snips.length > 0 ? snips : pr.placeHolderStr
             } else {
                 return getItemText(item)
                     || pr.placeHolderStr
