@@ -1,6 +1,6 @@
 {
   "name": "se-react-dropdown",
-  "version": "2.0.8.1",
+  "version": "2.0.8.2",
   "main": "dist/component.js",
   "scripts": {
     "start": "webpack-dev-server",
